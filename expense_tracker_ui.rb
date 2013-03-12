@@ -15,7 +15,12 @@ end
 def menu
   choice = nil
   until choice == 'x'
-    puts "Type 'u' for user mode,'a' for administrator mode or 'x' to exit."
+    puts "\n\n  MAIN MENU"
+    puts "Enter one of the following choices: "
+    puts "'u' for user"
+    puts "'a' for administrator"
+    puts "'x' to exit"
+    choice = gets.chomp
     case choice
     when 'u'
       menu_user
@@ -32,8 +37,13 @@ end
 def menu_user
   choice = nil
   until choice == 'x'
-    puts "Type 'a' to add a purchase, or 'd' to delete a purchase or 'r' to access reports."
-    puts "Type 'x' to exit."
+    puts "\n\n  USER MENU"
+    puts "Enter one of the following choices: "
+    puts "'a' to add a purchase"
+    puts "'e' to edit a purchase"
+    puts "'d' to delete a purchase"
+    puts "'r' to access reports."
+    puts "'x' to exit."
     choice = gets.chomp
     case choice
     when 'a'
@@ -43,7 +53,7 @@ def menu_user
     when 'r'
       menu_reports
     when 'x'
-      exit
+     
     else
       invalid
     end
@@ -53,8 +63,12 @@ end
 def menu_reports
   choice = nil
   until choice == 'x'
-    puts "Type 'd' to view expenses by date, 'c' to view expenses by category or 'v' to view expenses by vendor."
-    puts "Type 'x' to exit."
+    puts "\n\n  REPORTS MENU"
+    puts "Enter one of the following choices: "
+    puts "'d' to view expenses by date"
+    puts "'c' to view expenses by category"
+    puts "'v' to view expenses by vendor"
+    puts "'x' to exit"
     choice = gets.chomp
     case choice
     when 'd'
@@ -74,8 +88,13 @@ end
 def menu_admin
   choice = nil
   until choice == 'x'
-    puts "Type 'c' to add a category, 'v' to add a vendor, 'dc' to delete a category or 'dv' to delete a vendor."
-    puts "Type 'x' to exit."
+    puts "\n\n  ADMIN MENU"
+    puts "Enter one of the following choices: "
+    puts "'c' to add a category"
+    puts "'v' to add a vendor"
+    puts "'dc' to delete a category" 
+    puts "'dv' to delete a vendor."
+    puts "'x' to exit."
     choice = gets.chomp
     case choice
     when 'c'
@@ -95,12 +114,38 @@ def menu_admin
 end
 
 def add_category
+  #list all categories
   puts "Enter the name of the category you would like to add."
-  category_name = gets.chomp
-  category = Category.new(:name => :category_name)
+  name = gets.chomp
+  category = Category.new(:name => name)
   if category.save
-    puts "#{category_name} has been added."
+    puts "#{name} has been added."
   else
-    puts "That was not a valid category name."
+    puts "That is not a valid category name."
   end
 end
+
+def delete_category
+  #list all categories
+  puts "Enter the name of the category you would like to destroy."
+  name = gets.chomp
+  category = Category.where(:name => name).pop
+  if category.destroy
+    puts "#{name} has been anihilated!"
+  else
+    puts "#{name} is being used and cannot be deleted."
+  end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+welcome

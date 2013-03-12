@@ -4,18 +4,11 @@ describe Category do
   context 'validations' do 
     it {should validate_presence_of :name}
     it {should validate_uniqueness_of :name}
-
-    it 'checks to make sure a category name is an alphanumeric string no longer than 25 characters' do
-      category = Category.create(:name => 'supercalifragilisticexpialidocious')
-      category.valid?.should be_false
-    end
+    it { should ensure_length_of(:name).is_at_least(5).is_at_most(25) }
   end
 
   context 'associations' do
-    it {should belong_to :expense}
-
+    it {should have_many :expenses}
   end
-
-  
 
 end
