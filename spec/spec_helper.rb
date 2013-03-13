@@ -1,13 +1,12 @@
 require 'active_record'
 require 'rspec'
 require 'shoulda-matchers'
-# require 'factory_girl'
-# require './spec/factories'
+require 'factory_girl'
+require './spec/factories'
 
 require 'expense'
 require 'category'
 require 'vendor'
-
 
 ActiveRecord::Base.establish_connection(YAML::load(File.open('./db/config.yml'))["test"])
 

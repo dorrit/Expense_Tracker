@@ -4,6 +4,11 @@ class Expense < ActiveRecord::Base
 
 
   belongs_to :category
+  belongs_to :vendor
+
+  def self.report_expense_date(start_date, end_date)
+    Expense.where(:date => start_date..end_date)
+  end
 
 
 

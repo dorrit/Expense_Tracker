@@ -65,12 +65,15 @@ def menu_reports
   until choice == 'x'
     puts "\n\n  REPORTS MENU"
     puts "Enter one of the following choices: "
+    puts "'l' list all expenses"
     puts "'d' to view expenses by date"
     puts "'c' to view expenses by category"
     puts "'v' to view expenses by vendor"
     puts "'x' to exit"
     choice = gets.chomp
     case choice
+    when 'l'
+      expense_list
     when 'd'
       expenses_by_date
     when 'c'
@@ -78,11 +81,21 @@ def menu_reports
     when 'v'
       expenses_by_vendor
     when 'x'
-      exit
+      
     else
       invalid
     end
   end
+end
+
+def expenses_by_date
+  puts "Enter a start date for the report"
+  start_date = gets.chomp
+  puts "Enter an end date for the report"
+  end_date = gets.chomp
+  expenses = Expense.report_expense_date(start_date, end_date)
+  expenses.each { |expense| puts "#{expense.date} \t #{expense.description} \t #{expense.amount} \t #{expense.category_id} \t #{expense.vendor_id}" }
+
 end
 
 def menu_admin
@@ -169,8 +182,8 @@ def add_expense
   puts "\n\nEnter the vendor number for this expense: "
   vendor_id = gets.chomp
   vendor = Vendor.find(vendor_id)
-  record = vendor.expenses.build(:date => date, :description => description, :amount => amount, :category_id => category_id)
-  puts "#{record.date} \t #{record.description} \t $#{record.amount.class} has been added."
+  record = vendor.expenses.create(:date => date, :description => description, :amount => amount, :category_id => category_id)
+  puts "#{record.date.strftime("%d %b %y")} \t #{record.description} \t $#{record.amount} has been added."
 end
 
 def category_list
@@ -183,11 +196,11 @@ def vendor_list
   vendors.each {|vendor| puts "#{vendor.id} \t #{vendor.company}"}
 end
 
-
-
-
-
-
+def expense_list
+  expenses = Expense.all
+  puts "\t DATE \t DESCRIPTION \t AMOUNT \t CATEGORY \t VENDOR \n "
+  expenses.each {|expense| puts "#{expense.date} \t #{expense.description} \t #{expense.amount} \t\t #{expense.category_id} \t #{expense.vendor_id}"}
+end
 
 
 welcome

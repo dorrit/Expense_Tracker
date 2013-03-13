@@ -1,6 +1,8 @@
 class Category < ActiveRecord::Base
   validates :name, :presence => true, :uniqueness => true
+  validates :name, :length => { :minimum => 2, :maximum => 25 }
+
   has_many :expenses
-  validates :name, :length => { :minimum => 5, :maximum => 25 }
+
 
 end
