@@ -114,7 +114,7 @@ def menu_admin
 end
 
 def add_category
-  #list all categories
+  category_list
   puts "Enter the name of the category you would like to add."
   name = gets.chomp
   category = Category.new(:name => name)
@@ -125,11 +125,23 @@ def add_category
   end
 end
 
+def add_vendor
+  vendor_list
+  puts "Enter the name of the vendor you would like to add."
+  company = gets.chomp
+  vendor = Vendor.new(:company => company)
+  if vendor.save
+    puts "#{company} has been added."
+  else
+    puts "That is not a valid vendor name."
+  end
+end
+
 def delete_category
-  #list all categories
-  puts "Enter the name of the category you would like to destroy."
-  name = gets.chomp
-  category = Category.where(:name => name).pop
+  category_list
+  puts "Enter the number for the category you would like to anihilate?"
+  category_id = gets.chomp
+  category = Category.find(category_id)
   if category.destroy
     puts "#{name} has been anihilated!"
   else
@@ -137,9 +149,39 @@ def delete_category
   end
 end
 
+def add_expense
+  puts "\n\nEnter a date for your expense: "
+  date = gets.chomp
+  puts "Enter a description for your expense (100 characters max): "
+  description = gets.chomp
+  puts "Enter the amount of this expense: "
+  amount = gets.chomp
 
+  puts "\n\nPlease choose from the following list of categories:"
+  category_list
+  puts "Enter the category number for this expense: "
+  category_id = gets.chomp
+  # Category.where(:name => name).pop.id
+  category = Category.find(category_id)
 
+  puts "\n\nPlease choose from the following list of vendors:"
+  vendor_list
+  puts "\n\nEnter the vendor number for this expense: "
+  vendor_id = gets.chomp
+  vendor = Vendor.find(vendor_id)
+  record = vendor.expenses.build(:date => date, :description => description, :amount => amount, :category_id => category_id)
+  puts "#{record.date} \t #{record.description} \t $#{record.amount.class} has been added."
+end
 
+def category_list
+  categories = Category.all
+  categories.each {|category| puts "#{category.id} \t #{category.name}"}
+end
+
+def vendor_list
+  vendors = Vendor.all 
+  vendors.each {|vendor| puts "#{vendor.id} \t #{vendor.company}"}
+end
 
 
 
