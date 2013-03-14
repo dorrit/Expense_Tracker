@@ -15,25 +15,33 @@ describe Expense do
 
   end
 
-  # context '#report_expense_date' do
-  #   it 'returns expenses within a date range' do
-  #     expense1 = Expense.create(:date => '20130201', :description => 'Jeans', :amount => 426.50, :category_id => 1, :vendor_id => 1)
-  #     expense2 = Expense.create(:date => '20130215', :description => 'Wines', :amount => 250.00, :category_id => 2, :vendor_id => 2)
-  #     expense3 = Expense.create(:date => '20130228', :description => 'Groceries', :amount => 289.15, :category_id => 3, :vendor_id => 2)
-      
-  
-  #     Expense.report_expense_date(start_date, end_date).should match_array [expense1, expense2, expense3]
-  #     #it { should ensure_inclusion_of(start_date, end_date).in_array([expense1, expense2, expense3]) }
-  #   end
-  # end
+  context 'date_scopes' do
+    it 'returns all dates that are after the beginning date' do
+      expenses_after_date = ['20020101', '20030202', '20060204'].map {|date| FactoryGirl.create(:expense, :date => date)}
+      expenses_before_date = ['10020101', '10030202', '10060204'].map {|date| FactoryGirl.create(:expense, :date => date)}
+      Expense.after_date("20010404").should match_array expenses_after_date
+    end
 
+    it 'returns all dates that are before the beginning date' do
+      expenses_after_date = ['20020101', '20030202', '20060204'].map {|date| FactoryGirl.create(:expense, :date => date)}
+      expenses_before_date = ['10020101', '10030202', '10060204'].map {|date| FactoryGirl.create(:expense, :date => date)}
+      Expense.before_date("20010404").should match_array expenses_before_date
+    end
+  end
 
-  context '#report_expense_date' do
-    it 'returns expenses within a date range' do
-      expenses_to_report = (1..2).to_a.map {|expense| FactoryGirl.create :expense}
-      start_date = Date.parse('20130201')
-      end_date = Date.parse('20130228')
-      Expense.report_expense_date(start_date, end_date).should match_array expenses_to_report
+  context '#vendor_expense' do
+    it 'returns expenses for a specified vendor' do
+      expenses = (1..5).to_a.map {|expense| FactoryGirl.create(:expense, :vendor_id => '1')}
+      Expense.vendor_expense(1).should match_array expenses
+    end
+  end
+
+    context '#vendor_expense' do
+    it 'returns expenses for a specified vendor' do
+      expenses = (1..5).to_a.map {|expense| FactoryGirl.create(:expense, :vendor_id => '1')}
+      Expense.vendor_expense(2).should eq []
     end
   end
 end
+
+

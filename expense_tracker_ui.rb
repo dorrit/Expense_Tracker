@@ -26,10 +26,8 @@ def menu
       menu_user
     when 'a'
       menu_admin
-    when 'x'
-      exit
     else
-      invalid
+      
     end
   end
 end
@@ -52,10 +50,8 @@ def menu_user
       delete_expense
     when 'r'
       menu_reports
-    when 'x'
-     
     else
-      invalid
+      
     end
   end
 end
@@ -80,10 +76,8 @@ def menu_reports
       expenses_by_category
     when 'v'
       expenses_by_vendor
-    when 'x'
-      
     else
-      invalid
+      
     end
   end
 end
@@ -93,10 +87,19 @@ def expenses_by_date
   start_date = gets.chomp
   puts "Enter an end date for the report"
   end_date = gets.chomp
-  expenses = Expense.report_expense_date(start_date, end_date)
-  expenses.each { |expense| puts "#{expense.date} \t #{expense.description} \t #{expense.amount} \t #{expense.category_id} \t #{expense.vendor_id}" }
+  expenses = Expense.after_date(start_date).before_date(end_date)
+  expenses.each { |expense| puts "#{expense.date} \t #{expense.description} \t $#{expense.amount} \t #{expense.category_id} \t #{expense.vendor_id}" }
+end
+
+def expenses_by_vendor
+  vendor_list
+  puts "Enter the number for the vendor you are searching for"
+  vendor_id = gets.chomp
+  vendor_expenses = Expense.vendor_expense(vendor_id)
+  vendor_expenses.each { |expense| puts "#{expense.date} \t #{expense.description} \t $#{expense.amount} \t #{expense.category_id} \t #{expense.vendor_id}" }
 
 end
+
 
 def menu_admin
   choice = nil
@@ -118,10 +121,8 @@ def menu_admin
       delete_category
     when 'dv'
       delete_vendor
-    when 'x'
-      exit
     else
-      invalid
+      
     end
   end
 end
@@ -199,7 +200,7 @@ end
 def expense_list
   expenses = Expense.all
   puts "\t DATE \t DESCRIPTION \t AMOUNT \t CATEGORY \t VENDOR \n "
-  expenses.each {|expense| puts "#{expense.date} \t #{expense.description} \t #{expense.amount} \t\t #{expense.category_id} \t #{expense.vendor_id}"}
+  expenses.each {|expense| puts "#{expense.date} \t #{expense.description} \t $#{expense.amount} \t\t #{expense.category_id}  \t #{expense.vendor_id}"}
 end
 
 
