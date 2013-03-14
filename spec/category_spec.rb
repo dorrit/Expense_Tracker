@@ -17,7 +17,6 @@ describe Category do
       category.name.should eq "Toilet paper"
     end
   end
-
 end
 
 

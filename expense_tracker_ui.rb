@@ -88,7 +88,15 @@ def expenses_by_date
   puts "Enter an end date for the report"
   end_date = gets.chomp
   expenses = Expense.after_date(start_date).before_date(end_date)
-  expenses.each { |expense| puts "#{expense.date} \t #{expense.description} \t $#{expense.amount} \t #{expense.category_id} \t #{expense.vendor_id}" }
+  expenses.each { |expense| puts "#{expense.date} \t #{expense.description} \t $#{expense.amount} \t #{expense.category.name} \t #{expense.vendor.company}" }
+end
+
+def expenses_by_category
+  category_list
+  puts "Enter the number for the category you are searching for"
+  category_id = gets.chomp
+  category_expenses = Expense.category_expense(category_id)
+  category_expenses.each { |expense| puts "#{expense.date} \t #{expense.description} \t $#{expense.amount} \t #{expense.category.name} \t #{expense.vendor.company}" }
 end
 
 def expenses_by_vendor
@@ -96,10 +104,9 @@ def expenses_by_vendor
   puts "Enter the number for the vendor you are searching for"
   vendor_id = gets.chomp
   vendor_expenses = Expense.vendor_expense(vendor_id)
-  vendor_expenses.each { |expense| puts "#{expense.date} \t #{expense.description} \t $#{expense.amount} \t #{expense.category_id} \t #{expense.vendor_id}" }
+  vendor_expenses.each { |expense| puts "#{expense.date} \t #{expense.description} \t $#{expense.amount} \t #{expense.category.name} \t #{expense.vendor.company}" }
 
 end
-
 
 def menu_admin
   choice = nil
@@ -108,8 +115,8 @@ def menu_admin
     puts "Enter one of the following choices: "
     puts "'c' to add a category"
     puts "'v' to add a vendor"
-    puts "'dc' to delete a category" 
-    puts "'dv' to delete a vendor."
+    # puts "'dc' to delete a category" 
+    # puts "'dv' to delete a vendor."
     puts "'x' to exit."
     choice = gets.chomp
     case choice
@@ -163,6 +170,18 @@ def delete_category
   end
 end
 
+def delete_vendor
+  vendor_list
+  puts "Enter the number for the vendor you would like to anihilate?"
+  vendor_id = gets.chomp
+  category = Category.find(vendor_id)
+  if vendor.destroy
+    puts "#{name} has been anihilated!"
+  else
+    puts "#{name} is being used and cannot be deleted."
+  end
+end
+
 def add_expense
   puts "\n\nEnter a date for your expense: "
   date = gets.chomp
@@ -200,7 +219,7 @@ end
 def expense_list
   expenses = Expense.all
   puts "\t DATE \t DESCRIPTION \t AMOUNT \t CATEGORY \t VENDOR \n "
-  expenses.each {|expense| puts "#{expense.date} \t #{expense.description} \t $#{expense.amount} \t\t #{expense.category_id}  \t #{expense.vendor_id}"}
+  expenses.each {|expense| puts "#{expense.date} \t #{expense.description} \t $#{expense.amount} \t\t #{expense.category.name}  \t #{expense.vendor.company}"}
 end
 
 

@@ -7,10 +7,8 @@ describe Vendor do
     it {should ensure_length_of(:company).is_at_least(2).is_at_most(25)}
   end
 
-
   context 'associations' do
     it {should have_many :expenses}
-
   end
 
   context 'callbacks' do 
@@ -19,5 +17,4 @@ describe Vendor do
       vendor.company.should eq "Lalas"
     end
   end
-
 end

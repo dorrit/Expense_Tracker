@@ -7,7 +7,6 @@ class Vendor < ActiveRecord::Base
   before_save :capitalize_company
 
   private
-
   def capitalize_company
     self.company = self.company.capitalize
   end

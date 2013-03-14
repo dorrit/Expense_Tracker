@@ -6,13 +6,11 @@ describe Expense do
     it {should validate_presence_of :description}
     it {should validate_presence_of :amount}
     it { should ensure_length_of(:description).is_at_least(5).is_at_most(100) }
-
   end
 
   context 'associations' do
     it {should belong_to :category}
     it {should belong_to :vendor}
-
   end
 
   context 'date_scopes' do
@@ -34,12 +32,22 @@ describe Expense do
       expenses = (1..5).to_a.map {|expense| FactoryGirl.create(:expense, :vendor_id => '1')}
       Expense.vendor_expense(1).should match_array expenses
     end
-  end
 
-    context '#vendor_expense' do
     it 'returns expenses for a specified vendor' do
       expenses = (1..5).to_a.map {|expense| FactoryGirl.create(:expense, :vendor_id => '1')}
       Expense.vendor_expense(2).should eq []
+    end
+  end
+
+  context '#category_expense' do
+    it 'returns expenses for a specified category' do
+      expenses = (1..5).to_a.map {|expense| FactoryGirl.create(:expense, :category_id => '1')}
+      Expense.category_expense(1).should match_array expenses
+    end
+
+    it 'returns expenses for a specified category' do
+      expenses = (1..5).to_a.map {|expense| FactoryGirl.create(:expense, :category_id => '1')}
+      Expense.category_expense(2).should eq []
     end
   end
 end
